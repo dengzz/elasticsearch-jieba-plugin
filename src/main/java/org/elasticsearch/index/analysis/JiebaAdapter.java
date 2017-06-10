@@ -20,14 +20,17 @@ public class JiebaAdapter implements Iterator<SegToken> {
   private String raw = null;
 
   public JiebaAdapter(String segModeName) {
-
-
     System.out.println("init jieba adapter");
     if (null == segModeName) {
       segMode = SegMode.SEARCH;
     } else {
       segMode = SegMode.valueOf(segModeName);
     }
+  }
+
+  public synchronized void process(String raw) {
+    List<SegToken> list = jiebaTagger.process(raw, segMode);
+    tokens = list.iterator();
   }
 
   public synchronized void reset(Reader input) {
